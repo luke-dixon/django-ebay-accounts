@@ -1,5 +1,3 @@
 include LICENSE
 include README.rst
-recursive-include ebay_accounts/static *
 recursive-include ebay_accounts/templates *
-recursive-include docs *
