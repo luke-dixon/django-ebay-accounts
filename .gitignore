@@ -1,0 +1,12 @@
+*.pyc
+*.pyo
+*.db
+*.egg
+*.egg-info
+.coverage
+.idea
+build
+dist
+environment_variables
+htmlcov
+README.html

@@ -1,0 +1,13 @@
+{% extends 'ebay_accounts/base.html' %}
+{% load i18n %}
+
+{% block body %}
+{% if object_list %}
+<ul>
+{% for object in object_list %}
+    <li>{{ object }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+    <a href="{% url 'ebay_accounts_account_begin_create' %}">{% trans "Add new account" %}</a>
+{% endblock body %}

@@ -1,0 +1,10 @@
+{% extends 'ebay_accounts/base.html' %}
+{% load i18n %}
+
+{% block body %}
+
+<h1>{{ object.user_id }}</h1>
+
+<p>{% blocktrans with expires=object.expires %}Expires at {{ expires }}{% endblocktrans %}</p>
+
+{% endblock body %}

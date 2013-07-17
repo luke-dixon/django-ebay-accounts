@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GetSessionIDResponse xmlns="urn:ebay:apis:eBLBaseComponents">
+  <Timestamp>2013-07-12T21:21:36.497Z</Timestamp>
+  <Ack>Success</Ack>
+  <Version>831</Version>
+  <Build>E831_CORE_API_16203143_R1</Build>
+  <SessionID>a11AAA**a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1</SessionID>
+</GetSessionIDResponse>

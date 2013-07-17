@@ -1,0 +1,12 @@
+{% extends 'ebay_accounts/base.html' %}
+{% load i18n %}
+
+{% block body %}
+<p>{% trans "Override this template and put your disclaimer here" %}</p>
+
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+
+    <button id="id_submit" class="button">{% trans "Add My Ebay Account" %}</button>
+</form>
+{% endblock body %}
