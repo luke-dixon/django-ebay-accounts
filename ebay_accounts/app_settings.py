@@ -58,7 +58,7 @@ EBAY_SANDBOX_TRADING_API_ENDPOINT = getattr(
 EBAY_PRODUCTION_TRADING_API_ENDPOINT = getattr(
     settings,
     'EBAY_PRODUCTION_TRADING_API_ENDPOINT',
-    'https://api.sandbox.ebay.com/ws/api.dll')
+    'https://api.ebay.com/ws/api.dll')
 
 #: Ebay Site Choices
 EBAY_SITE_CHOICES = (
