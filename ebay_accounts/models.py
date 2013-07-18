@@ -78,18 +78,17 @@ class Session(models.Model):
 
     def get_sign_in_url(self):
         if self.production is True:
-            return settings.EBAY_PRODUCTION_TOKEN_SIGNIN_URL_TEMPLATE.format(
-                ru_name=settings.EBAY_PRODUCTION_RU_NAME,
-                session_id=self.session_id,
-                ruparams={'UUID': self.uuid},
-            )
+            url_template = settings.EBAY_PRODUCTION_TOKEN_SIGNIN_URL_TEMPLATE
+            ru_name = settings.EBAY_PRODUCTION_RU_NAME
         else:
-            return settings.EBAY_SANDBOX_TOKEN_SIGNIN_URL_TEMPLATE.format(
-                params=urlencode({
-                    'RuName': settings.EBAY_SANDBOX_RU_NAME,
-                    'SessID': self.session_id,
-                    'ruparams': 'UUID={0}'.format(self.uuid),
-                }))
+            url_template = settings.EBAY_SANDBOX_TOKEN_SIGNIN_URL_TEMPLATE
+            ru_name = settings.EBAY_SANDBOX_RU_NAME
+        return url_template.format(
+            params=urlencode({
+                'RuName': ru_name,
+                'SessID': self.session_id,
+                'ruparams': 'UUID={0}'.format(self.uuid),
+            }))
 
     def reject(self):
         self.delete()
