@@ -24,8 +24,8 @@ Quick start
    select an environment and key and click 'Customize the eBay User Consent
    Form, Generate a RuName
 
- - Set the 'Accept Redirect URL' to 'https://www.example.com/ebay_accounts/finish' (must be https)
- - Set the 'Reject Redirect URL' to 'https://www.example.com/ebay_accounts/reject' (must be https)
+ - Set the 'Accept Redirect URL' to 'https://www.example.com/ebay_accounts/finish_create' (must be https)
+ - Set the 'Reject Redirect URL' to 'https://www.example.com/ebay_accounts/reject_create' (must be https)
  - Set the 'Privacy Policy URL' to 'https://www.example.com/ebay_accounts/privacy_policy' or to wherever your privacy policy is
 
 4. Add some settings to your settings file
