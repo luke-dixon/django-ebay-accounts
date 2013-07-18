@@ -33,7 +33,7 @@ class TradingAPI(object):
         self._token = token
 
     def _get_requester_credentials(self):
-        return {'RequesterCredentials': {'eBayAuthToken': self._token}}
+        return {'eBayAuthToken': self._token}
 
     def _get_headers(self, call):
         return {
@@ -53,7 +53,7 @@ class TradingAPI(object):
         for key, value in kw_dict.iteritems():
             request_dict[request_key][key] = value
         if self._token and include_requester_credentials:
-            credentials = self._get_requester_credentials
+            credentials = self._get_requester_credentials()
             request_dict[request_key]['RequesterCredentials'] = credentials
         data = xmltodict.unparse(request_dict)
         return data
