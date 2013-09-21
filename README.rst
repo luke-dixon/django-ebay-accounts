@@ -58,11 +58,13 @@ Running Tests
 To run the tests first install some requirements::
 
     pip install -r requirements.txt
-
-Copy and edit the environment_variables.example file then import them::
-
-    . environment_variables
+    python setup.py develop
 
 Then run the tests::
 
-    django-admin.py test --settings=ebay_accounts.test_settings ebay_accounts
+    PYTHONPATH=. django-admin.py test --settings=ebay_accounts.test_settings ebay_accounts
+
+Or alternatively, just use tox::
+
+    pip install tox
+    tox

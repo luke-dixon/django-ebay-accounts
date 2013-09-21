@@ -10,3 +10,4 @@ dist
 environment_variables
 htmlcov
 README.html
+.tox

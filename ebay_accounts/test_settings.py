@@ -3,7 +3,6 @@
 Test Settings
 """
 from __future__ import unicode_literals
-import os
 
 
 APP_NAME = 'ebay_accounts'
@@ -47,13 +46,13 @@ LOGGING = {
         }
     }
 }
-EBAY_SANDBOX_DEVID = os.environ['EBAY_SANDBOX_DEVID']
-EBAY_SANDBOX_APPID = os.environ['EBAY_SANDBOX_APPID']
-EBAY_SANDBOX_CERTID = os.environ['EBAY_SANDBOX_CERTID']
+EBAY_SANDBOX_DEVID = ''
+EBAY_SANDBOX_APPID = ''
+EBAY_SANDBOX_CERTID = ''
+EBAY_SANDBOX_RU_NAME = ''
 EBAY_PRODUCTION_DEVID = ''
 EBAY_PRODUCTION_APPID = ''
 EBAY_PRODUCTION_CERTID = ''
-EBAY_SANDBOX_RU_NAME = os.environ['EBAY_SANDBOX_RU_NAME']
 EBAY_PRODUCTION_RU_NAME = ''
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8
