@@ -6,9 +6,14 @@ from __future__ import unicode_literals
 from uuid import uuid4
 
 from datetime import datetime
-from urllib import urlencode
-from django.core.urlresolvers import reverse
+try:
+    # 3.x name
+    from urllib.parse import urlencode
+except ImportError:
+    # 2.x name
+    from urllib import urlencode
 
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
