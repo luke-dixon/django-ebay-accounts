@@ -50,7 +50,7 @@ class TradingAPI(object):
         request_dict = {request_key: {
             '@xmlns': 'urn:ebay:apis:eBLBaseComponents',
         }}
-        for key, value in kw_dict.iteritems():
+        for key, value in kw_dict.items():
             request_dict[request_key][key] = value
         if self._token and include_requester_credentials:
             credentials = self._get_requester_credentials()
