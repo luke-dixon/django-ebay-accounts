@@ -218,6 +218,6 @@ class AccountFinishCreateView(LoginTestMixin, TestCase):
 
         # Check the expiry date for the token
         self.assertEqual(
-            account.expires, datetime(2014, 07, 12, 21, 21, 36, tzinfo=utc))
+            account.expires, datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc))
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8
