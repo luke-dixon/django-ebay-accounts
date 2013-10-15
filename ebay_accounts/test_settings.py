@@ -4,16 +4,24 @@ Test Settings
 """
 from __future__ import unicode_literals
 
+import django
+
 
 APP_NAME = 'ebay_accounts'
-
-TEST_RUNNER = 'discover_runner.DiscoverRunner'
 
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'discover_runner',
+)
+
+if django.VERSION[:2] < (1, 6):
+    TEST_RUNNER = 'discover_runner.DiscoverRunner'
+    INSTALLED_APPS += (
+        'discover_runner',
+    )
+
+INSTALLED_APPS += (
     'ebay_accounts',
     'south',
 )
@@ -49,10 +57,10 @@ LOGGING = {
 EBAY_SANDBOX_DEVID = ''
 EBAY_SANDBOX_APPID = ''
 EBAY_SANDBOX_CERTID = ''
-EBAY_SANDBOX_RU_NAME = ''
+EBAY_SANDBOX_RU_NAME = 'TEST_SANDBOX_RU_NAME'
 EBAY_PRODUCTION_DEVID = ''
 EBAY_PRODUCTION_APPID = ''
 EBAY_PRODUCTION_CERTID = ''
-EBAY_PRODUCTION_RU_NAME = ''
+EBAY_PRODUCTION_RU_NAME = 'TEST_PRODUCTION_RU_NAME'
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8

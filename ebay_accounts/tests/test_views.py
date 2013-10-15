@@ -5,6 +5,12 @@ Ebay Accounts Tests Views
 from __future__ import unicode_literals
 import os
 from datetime import datetime
+try:
+    # Python 3
+    from urllib.parse import urlparse, parse_qs
+except ImportError:
+    # Python 2
+    from urlparse import urlparse, parse_qs
 
 from django.utils.timezone import now, utc
 
@@ -14,7 +20,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.utils.http import urlquote
 
 from ..forms import BeginAccountCreationForm
 from ..models import Account, Session
@@ -139,13 +144,14 @@ class AccountBeginCreateViewTest(LoginTestMixin, TestCase):
 
         # Check that we would get redirected to the ebay sign-in URL
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            response['Location'],
-            settings.EBAY_SANDBOX_TOKEN_SIGNIN_URL_TEMPLATE.format(
-                params='RuName={0}&SessID={1}&ruparams={2}'.format(
-                    urlquote(settings.EBAY_SANDBOX_RU_NAME),
-                    urlquote(session_id),
-                    urlquote('UUID={0}'.format(uuid)))))
+        url = urlparse(response['Location'])
+        self.assertEqual(url.scheme, 'https')
+        self.assertEqual(url.netloc, 'signin.sandbox.ebay.com')
+        self.assertEqual(url.path, '/ws/eBayISAPI.dll')
+        query = parse_qs(url.query)
+        self.assertListEqual(query['RuName'], [settings.EBAY_SANDBOX_RU_NAME])
+        self.assertListEqual(query['SessID'], [session_id])
+        self.assertListEqual(query['ruparams'], ['UUID={0}'.format(uuid)])
 
 
 class AccountRejectCreateViewTest(LoginTestMixin, TestCase):
