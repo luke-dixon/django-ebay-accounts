@@ -1,5 +1,12 @@
 language: python
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
 install:
   - pip install tox
+env:
+  - TOXENV=django1.8
+  - TOXENV=django1.9
 script:
   - tox
