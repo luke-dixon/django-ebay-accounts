@@ -34,8 +34,33 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+)
+if django.VERSION[:2] > (1, 7):
+    MIDDLEWARE_CLASSES += (
+        'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    )
+
+MIDDLEWARE_CLASSES += (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
+
+if django.VERSION[:2] >= (1, 8):
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': [
+            ],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.debug',
+                    'django.template.context_processors.request',
+                    'django.contrib.auth.context_processors.auth',
+                    'django.contrib.messages.context_processors.messages',
+                ],
+            },
+        },
+    ]
 
 DATABASES = {
     'default': {
