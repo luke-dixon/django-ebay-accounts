@@ -2,8 +2,8 @@
 Django Ebay Accounts
 ====================
 
-.. image:: https://drone.io/bitbucket.org/blackmoreit/django-ebay-accounts/status.png
-   :target: https://drone.io/bitbucket.org/blackmoreit/django-ebay-accounts/latest
+.. image:: https://drone.io/bitbucket.org/luke_dixon/django-ebay-accounts/status.png
+   :target: https://drone.io/bitbucket.org/luke_dixon/django-ebay-accounts/latest
    :alt: Build Status
 
 A Django app for managing Ebay accounts
