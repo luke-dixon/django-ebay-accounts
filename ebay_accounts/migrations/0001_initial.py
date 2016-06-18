@@ -1,63 +1,43 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import ebay_accounts.models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Account'
-        db.create_table(u'ebay_accounts_account', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user_id', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('expires', self.gf('django.db.models.fields.DateTimeField')()),
-            ('token', self.gf('django.db.models.fields.TextField')()),
-            ('production', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('site_id', self.gf('django.db.models.fields.IntegerField')()),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal(u'ebay_accounts', ['Account'])
+    dependencies = [
+    ]
 
-        # Adding model 'Session'
-        db.create_table(u'ebay_accounts_session', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('session_id', self.gf('django.db.models.fields.CharField')(max_length=40, blank=True)),
-            ('uuid', self.gf('django.db.models.fields.CharField')(default='6bf2635f5b4a4b5282a3f314959b2e2e', unique=True, max_length=32)),
-            ('production', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('site_id', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal(u'ebay_accounts', ['Session'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Account'
-        db.delete_table(u'ebay_accounts_account')
-
-        # Deleting model 'Session'
-        db.delete_table(u'ebay_accounts_session')
-
-
-    models = {
-        u'ebay_accounts.account': {
-            'Meta': {'object_name': 'Account'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'expires': ('django.db.models.fields.DateTimeField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'production': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'site_id': ('django.db.models.fields.IntegerField', [], {}),
-            'token': ('django.db.models.fields.TextField', [], {}),
-            'user_id': ('django.db.models.fields.CharField', [], {'max_length': '255'})
-        },
-        u'ebay_accounts.session': {
-            'Meta': {'object_name': 'Session'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'production': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'session_id': ('django.db.models.fields.CharField', [], {'max_length': '40', 'blank': 'True'}),
-            'site_id': ('django.db.models.fields.IntegerField', [], {}),
-            'uuid': ('django.db.models.fields.CharField', [], {'default': "'6d20268e11564342bb0fd10fc12f0773'", 'unique': 'True', 'max_length': '32'})
-        }
-    }
-
-    complete_apps = ['ebay_accounts']
+    operations = [
+        migrations.CreateModel(
+            name='Account',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('user_id', models.CharField(max_length=255)),
+                ('expires', models.DateTimeField()),
+                ('token', models.TextField()),
+                ('production', models.BooleanField(default=False)),
+                ('site_id', models.IntegerField(choices=[(0, 'United States'), (2, 'Canada'), (3, 'United Kingdom'), (15, 'Australia'), (16, 'Austria'), (23, 'Belgium (French)'), (71, 'France'), (77, 'Germany'), (100, 'eBay Motors'), (101, 'Italy'), (123, 'Belgium (Dutch)'), (146, 'Netherlands'), (186, 'Spain'), (193, 'Switzerland'), (196, 'Taiwan'), (201, 'Hong Kong'), (203, 'India'), (205, 'Ireland'), (207, 'Malaysia'), (210, 'Canada'), (211, 'Philippines'), (212, 'Poland'), (216, 'Singapore'), (218, 'Sweden'), (223, 'China')])),
+                ('active', models.BooleanField(default=True)),
+            ],
+            options={
+                'permissions': (('view_account', 'Can view account'),),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Session',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('session_id', models.CharField(max_length=40, blank=True)),
+                ('uuid', models.CharField(default=ebay_accounts.models.gen_uuid_hex, unique=True, max_length=32)),
+                ('production', models.BooleanField(default=False)),
+                ('site_id', models.IntegerField(choices=[(0, 'United States'), (2, 'Canada'), (3, 'United Kingdom'), (15, 'Australia'), (16, 'Austria'), (23, 'Belgium (French)'), (71, 'France'), (77, 'Germany'), (100, 'eBay Motors'), (101, 'Italy'), (123, 'Belgium (Dutch)'), (146, 'Netherlands'), (186, 'Spain'), (193, 'Switzerland'), (196, 'Taiwan'), (201, 'Hong Kong'), (203, 'India'), (205, 'Ireland'), (207, 'Malaysia'), (210, 'Canada'), (211, 'Philippines'), (212, 'Poland'), (216, 'Singapore'), (218, 'Sweden'), (223, 'China')])),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+    ]
