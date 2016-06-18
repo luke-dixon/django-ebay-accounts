@@ -17,7 +17,7 @@ setup(
     license='BSD License',
     description='A Django app for managing Ebay accounts',
     long_description=README,
-    url='https://github.com/luke_dixon/django-ebay-accounts',
+    url='https://github.com/luke-dixon/django-ebay-accounts',
     author='Luke Dixon',
     author_email='luke@luke.dixon.name',
     install_requires=[
