@@ -22,8 +22,7 @@ APP_NAME = 'ebay_accounts'
 
 
 # pylint: disable=E1120
-urlpatterns = patterns(
-    'ebay_accounts.views',
+urlpatterns = [
     url(
         r'^$',
         AccountListView.as_view(),
@@ -64,5 +63,5 @@ urlpatterns = patterns(
         AccountDeleteView.as_view(),
         name=APP_NAME + '_account_delete',
     ),
-)
+]
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8
