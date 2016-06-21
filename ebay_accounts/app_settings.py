@@ -24,7 +24,7 @@ EBAY_PRODUCTION_APPID = settings.EBAY_PRODUCTION_APPID
 EBAY_PRODUCTION_CERTID = settings.EBAY_PRODUCTION_CERTID
 
 #: The version of the Ebay Trading API to use
-EBAY_TRADING_API_VERSION = getattr(settings, 'EBAY_TRADING_API_VERSION', 829)
+EBAY_TRADING_API_VERSION = getattr(settings, 'EBAY_TRADING_API_VERSION', 949)
 
 #: The Ebay SiteID to use (defaults to 0 (US))
 EBAY_SITEID = getattr(settings, 'EBAY_SITEID', '0')
