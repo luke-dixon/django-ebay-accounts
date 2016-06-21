@@ -7,4 +7,10 @@
 
 <p>{% blocktrans with expires=object.expires %}Expires at {{ expires }}{% endblocktrans %}</p>
 
+<form method="post" action="{% url 'ebay_accounts_account_revoke_token' object.pk %}">
+    {% csrf_token %}
+    {{ revoke_form.as_p }}
+    <button id="id_submit" class="button">{% trans "Revoke Token" %}</button>
+</form>
+
 {% endblock body %}

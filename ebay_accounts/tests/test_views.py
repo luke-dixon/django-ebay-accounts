@@ -14,7 +14,7 @@ except ImportError:
 
 from django.utils.timezone import now, utc
 
-from mock import patch, Mock
+import mock
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -23,7 +23,7 @@ from django.test import TestCase
 
 from ..forms import BeginAccountCreationForm
 from ..models import Account, Session
-from .. import app_settings as settings
+from .. import app_settings as settings, trading_api
 
 
 APP_NAME = 'ebay_accounts'
@@ -61,7 +61,7 @@ class LoginTestMixin(object):
         self.assertTrue(login_successful)
 
 
-class AccountListView(LoginTestMixin, TestCase):
+class AccountListViewTest(LoginTestMixin, TestCase):
     """
     Tests for the ``AccountListView`` view
     """
@@ -117,9 +117,9 @@ class AccountBeginCreateViewTest(LoginTestMixin, TestCase):
 
         filename = os.path.join(folder, 'GetSessionID1.xml')
         with open(filename) as f:
-            side_effect.append(Mock(content=f.read()))
+            side_effect.append(mock.Mock(content=f.read()))
 
-        with patch(APP_NAME + '.trading_api.requests') as m:
+        with mock.patch(APP_NAME + '.trading_api.requests') as m:
             m.post.side_effect = side_effect
 
             kw = {
@@ -181,7 +181,7 @@ class AccountRejectCreateViewTest(LoginTestMixin, TestCase):
             Session.DoesNotExist, Session.objects.get, pk=session.pk)
 
 
-class AccountFinishCreateView(LoginTestMixin, TestCase):
+class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
     """
     Tests for the ``AccountFinishCreateView`` view
     """
@@ -204,13 +204,13 @@ class AccountFinishCreateView(LoginTestMixin, TestCase):
 
         filename = os.path.join(folder, 'FetchToken1.xml')
         with open(filename) as f:
-            side_effect.append(Mock(content=f.read()))
+            side_effect.append(mock.Mock(content=f.read()))
 
         filename = os.path.join(folder, 'GetUser1.xml')
         with open(filename) as f:
-            side_effect.append(Mock(content=f.read()))
+            side_effect.append(mock.Mock(content=f.read()))
 
-        with patch(APP_NAME + '.trading_api.requests') as m:
+        with mock.patch(APP_NAME + '.trading_api.requests') as m:
             m.post.side_effect = side_effect
             response = self.client.get(
                 reverse(APP_NAME + '_account_finish_create'),
@@ -225,5 +225,106 @@ class AccountFinishCreateView(LoginTestMixin, TestCase):
         # Check the expiry date for the token
         self.assertEqual(
             account.expires, datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc))
+
+
+class AccountRevokeViewTest(LoginTestMixin, TestCase):
+    """
+    Tests for the ``AccountRevokeTokenView`` view
+    """
+    user_permissions = (
+        APP_NAME + '.change_account',  # To use revoke view
+        APP_NAME + '.view_account',  # To redirect back to detail view
+    )
+
+    def test_post_success(self):
+        # The account we are going to revoke
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.login()
+
+        # mock out revoke call
+        folder = os.path.join(os.path.dirname(__file__), 'xml')
+        side_effect = []
+
+        filename = os.path.join(folder, 'RevokeToken1.xml')
+        with open(filename) as f:
+            side_effect.append(mock.Mock(content=f.read()))
+
+        with mock.patch(APP_NAME + '.trading_api.requests') as m:
+            m.post.side_effect = side_effect
+            response = self.client.post(
+                reverse(APP_NAME + '_account_revoke_token', kwargs={'pk': account.pk}), {}, follow=True)
+
+            # Check that requrests got called with the right content
+            m.post.assert_has_calls([
+                mock.call(
+                    'https://api.sandbox.ebay.com/ws/api.dll',
+                    data='<?xml version="1.0" encoding="utf-8"?>\n<RevokeTokenRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RequesterCredentials><eBayAuthToken>12345</eBayAuthToken></RequesterCredentials></RevokeTokenRequest>',
+                    headers={
+                        'X-EBAY-API-DEV-NAME': '',
+                        'X-EBAY-API-CALL-NAME': 'RevokeToken',
+                        'X-EBAY-API-COMPATIBILITY-LEVEL': settings.EBAY_TRADING_API_VERSION,
+                        'X-EBAY-API-APP-NAME': '',
+                        'X-EBAY-API-SITEID': 0,
+                        'X-EBAY-API-CERT-NAME': ''
+                    }),
+            ])
+
+        # Check that we got redirected to the account detail page
+        self.assertRedirects(response, account.get_absolute_url())
+
+        updated_account = response.context_data['account']
+        self.assertEqual(account.pk, updated_account.pk)
+
+        # Check that the token is not active
+        self.assertFalse(updated_account.active)
+        self.assertEqual(updated_account.token, '')
+
+    def test_post_failure(self):
+        # The account we are going to revoke
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.login()
+
+        # mock out revoke call
+        folder = os.path.join(os.path.dirname(__file__), 'xml')
+        side_effect = []
+
+        filename = os.path.join(folder, 'RevokeToken2.xml')
+        with open(filename) as f:
+            side_effect.append(mock.Mock(content=f.read()))
+
+        with mock.patch(APP_NAME + '.trading_api.requests') as m:
+            m.post.side_effect = side_effect
+            self.assertRaises(
+                trading_api.AckException,
+                self.client.post,
+                reverse(APP_NAME + '_account_revoke_token', kwargs={'pk': account.pk}),
+                {}, follow=True)
+
+            # Check that requrests got called with the right content
+            m.post.assert_has_calls([
+                mock.call(
+                    'https://api.sandbox.ebay.com/ws/api.dll',
+                    data='<?xml version="1.0" encoding="utf-8"?>\n<RevokeTokenRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RequesterCredentials><eBayAuthToken>12345</eBayAuthToken></RequesterCredentials></RevokeTokenRequest>',
+                    headers={
+                        'X-EBAY-API-DEV-NAME': '',
+                        'X-EBAY-API-CALL-NAME': 'RevokeToken',
+                        'X-EBAY-API-COMPATIBILITY-LEVEL': settings.EBAY_TRADING_API_VERSION,
+                        'X-EBAY-API-APP-NAME': '',
+                        'X-EBAY-API-SITEID': 0,
+                        'X-EBAY-API-CERT-NAME': ''
+                    }),
+            ])
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8

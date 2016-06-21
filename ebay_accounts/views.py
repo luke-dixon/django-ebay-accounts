@@ -20,7 +20,7 @@ from django.views.generic.detail import SingleObjectMixin
 from braces.views import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Account, Session
-from .forms import BeginAccountCreationForm
+from . import forms
 
 
 APP_NAME = 'ebay_accounts'
@@ -34,7 +34,7 @@ class AccountBeginCreateView(
     Gets a session_id from Ebay and redirects to the sign-in URL
     """
     model = Session
-    form_class = BeginAccountCreationForm
+    form_class = forms.BeginAccountCreationForm
     permission_required = APP_NAME + '.add_account'
     template_name = APP_NAME + '/account_begin_create_form.html'
 
@@ -104,10 +104,11 @@ class AccountDetailView(
 class AccountUpdateView(
         LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     """
-    View for updating a ``Account`` object
+    View for updating an ``Account`` object
     """
     model = Account
     permission_required = APP_NAME + '.change_account'
+    fields = []
 
 
 class AccountDeleteView(
@@ -130,5 +131,20 @@ class PrivacyPolicyView(
         LoginRequiredMixin, PermissionRequiredMixin, TemplateView):
     permission_required = APP_NAME + '.view_account'
     template_name = 'ebay_accounts/privacy_policy.html'
+
+
+class AccountRevokeTokenView(
+        LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """
+    View for revoking an account's token.
+    """
+    model = Account
+    permission_required = APP_NAME + '.change_account'
+    fields = []
+
+    def form_valid(self, form):
+        instance = form.save()
+        instance.revoke_token()
+        return super(AccountRevokeTokenView, self).form_valid(form)
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8

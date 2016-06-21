@@ -16,6 +16,7 @@ except ImportError:
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils import timezone
 
 from .trading_api import TradingAPI
 from . import app_settings as settings
@@ -57,6 +58,18 @@ class Account(models.Model):
         if self.active:
             return True
         return False
+
+    def revoke_token(self):
+        trading = TradingAPI(
+            production=self.production,
+            site_id=self.site_id,
+            token=self.token)
+        response = trading.execute('RevokeToken', {})
+        if response.get('Ack') == 'Success':
+            self.active = False
+            self.expires = timezone.now()
+            self.token = ''
+            self.save()
 
 
 @python_2_unicode_compatible

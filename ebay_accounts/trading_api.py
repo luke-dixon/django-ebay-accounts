@@ -10,6 +10,14 @@ import requests
 from . import app_settings as settings
 
 
+class TradingAPIExcpetion(Exception):
+    pass
+
+
+class AckException(TradingAPIExcpetion):
+    pass
+
+
 class TradingAPI(object):
     _last_response = None
 
@@ -68,13 +76,20 @@ class TradingAPI(object):
             self,
             call,
             kw_dict,
-            include_requester_credentials=True):
+            include_requester_credentials=True,
+            ack_raise=True):
         headers = self._get_headers(call)
         data = self._get_xml_request(
             call, kw_dict, include_requester_credentials)
+        print(data)
         response = requests.post(self._endpoint, data=data, headers=headers)
         self._last_response = response
-        return self._get_data_from_response(call, data, response)
+        response = self._get_data_from_response(call, data, response)
+        if response.get('Ack') != 'Success':
+            raise AckException('{0}: {1}'.format(
+                response.get('Ack', 'UnknownError'),
+                response.get('Errors').get('ShortMessage')))
+        return response
 
     def set_token(self, token):
         self._token = token

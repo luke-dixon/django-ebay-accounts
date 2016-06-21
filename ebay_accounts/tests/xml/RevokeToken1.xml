@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RevokeTokenResponse xmlns="urn:ebay:apis:eBLBaseComponents">
+    <Timestamp>2016-06-21T19:24:11.024Z</Timestamp>
+    <Ack>Success</Ack>
+    <Version>949</Version>
+    <Build>E949_INTL_API_17934825_R1</Build>
+</RevokeTokenResponse>
