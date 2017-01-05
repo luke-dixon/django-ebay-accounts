@@ -6,7 +6,7 @@ python:
 install:
   - pip install tox
 env:
-  - TOXENV=django1.8
   - TOXENV=django1.9
+  - TOXENV=django1.10
 script:
   - tox
