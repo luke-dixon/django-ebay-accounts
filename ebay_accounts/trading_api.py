@@ -37,11 +37,11 @@ class TradingAPI(object):
 
     def _get_headers(self, call):
         return {
-            'X-EBAY-API-COMPATIBILITY-LEVEL': self.version,
+            'X-EBAY-API-COMPATIBILITY-LEVEL': str(self.version),
             'X-EBAY-API-DEV-NAME': self._dev_id,
             'X-EBAY-API-APP-NAME': self._app_id,
             'X-EBAY-API-CERT-NAME': self._cert_id,
-            'X-EBAY-API-SITEID': self.site_id,
+            'X-EBAY-API-SITEID': str(self.site_id),
             'X-EBAY-API-CALL-NAME': call,
         }
 
