@@ -2,28 +2,15 @@
 """
 Ebay Accounts Tests Views
 """
-from __future__ import unicode_literals
 import os
 from datetime import datetime
-try:
-    # Python 3
-    from urllib.parse import urlparse, parse_qs
-except ImportError:
-    # Python 2
-    from urlparse import urlparse, parse_qs
-
-from django.utils.timezone import now, utc
-
-try:
-    # Python 3
-    from unittest.mock import patch, Mock
-except ImportError:
-    # Python 2
-    from mock import patch, Mock
+from unittest.mock import patch, Mock
+from urllib.parse import urlparse, parse_qs
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.urls import reverse
+from django.utils.timezone import now, utc
 from django.test import TestCase
 
 from ..forms import BeginAccountCreationForm

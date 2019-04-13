@@ -2,21 +2,13 @@
 """
 Ebay Accounts Models
 """
-from __future__ import unicode_literals
 from uuid import uuid4
-
 from datetime import datetime
-try:
-    # 3.x name
-    from urllib.parse import urlencode
-except ImportError:
-    # 2.x name
-    from urllib import urlencode
+from urllib.parse import urlencode
 
 import django
 from django.urls import reverse
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 
 from .trading_api import TradingAPI
 from . import app_settings as settings
@@ -29,7 +21,6 @@ def gen_uuid_hex():
     return uuid4().hex
 
 
-@python_2_unicode_compatible
 class Account(models.Model):
     """An eBay account"""
     user_id = models.CharField(max_length=255)
@@ -61,7 +52,6 @@ class Account(models.Model):
         return False
 
 
-@python_2_unicode_compatible
 class Session(models.Model):
     """An Ebay session that is used in creating the account"""
     session_id = models.CharField(
@@ -71,7 +61,7 @@ class Session(models.Model):
     site_id = models.IntegerField(choices=settings.EBAY_SITE_CHOICES)
 
     def __str__(self):
-        return '{0}'.format(user_id=self.uuid)
+        return '{user_id}'.format(user_id=self.uuid)
 
     def set_session_id(self):
         trading = TradingAPI(
