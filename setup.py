@@ -21,7 +21,6 @@ setup(
     author='Luke Dixon',
     author_email='luke@luke.dixon.name',
     install_requires=[
-        'django-braces',
         'xmltodict',
         'requests',
     ],
