@@ -13,6 +13,7 @@ except ImportError:
     # 2.x name
     from urllib import urlencode
 
+import django
 from django.urls import reverse
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
@@ -39,9 +40,10 @@ class Account(models.Model):
     active = models.BooleanField(default=True)
 
     class Meta:
-        permissions = (
-            ('view_account', 'Can view account'),
-        )
+        if django.get_version() < '2.1.0':
+            permissions = (
+                ('view_account', 'Can view account'),
+            )
 
     def __str__(self):
         return '{user_id}'.format(user_id=self.user_id)
