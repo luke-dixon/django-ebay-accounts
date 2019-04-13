@@ -17,6 +17,13 @@ matrix:
   - python: 3.7
     dist: xenial
     env: TOXENV=django2.0
+  - python: 3.5
+    env: TOXENV=django2.1
+  - python: 3.6
+    env: TOXENV=django2.1
+  - python: 3.7
+    dist: xenial
+    env: TOXENV=django2.1
 install:
   - pip install tox
 script:
