@@ -14,7 +14,12 @@ except ImportError:
 
 from django.utils.timezone import now, utc
 
-from mock import patch, Mock
+try:
+    # Python 3
+    from unittest.mock import patch, Mock
+except ImportError:
+    # Python 2
+    from mock import patch, Mock
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
