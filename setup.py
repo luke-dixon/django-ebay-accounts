@@ -11,7 +11,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-ebay-accounts',
-    version='0.0.7',
+    version='0.1.0',
     zip_safe=False,
     packages=['ebay_accounts', 'ebay_accounts.migrations'],
     include_package_data=True,
@@ -26,21 +26,16 @@ setup(
         'requests',
     ],
     tests_require=[
-        'mock',
         'django-discover-runner',
     ],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.11',
-        'Framework :: Django :: 2.0',
         'Framework :: Django :: 2.1',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
