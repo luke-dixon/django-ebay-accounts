@@ -2,8 +2,6 @@
 """
 Ebay Accounts Views
 """
-from __future__ import unicode_literals
-
 from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
 from django.views.generic import (

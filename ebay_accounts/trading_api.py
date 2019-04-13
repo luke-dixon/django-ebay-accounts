@@ -2,8 +2,6 @@
 """
 Ebay Trading API
 """
-from __future__ import unicode_literals
-
 import xmltodict
 import requests
 
