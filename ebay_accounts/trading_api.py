@@ -10,6 +10,18 @@ import requests
 from . import app_settings as settings
 
 
+class TradingAPIWarning(Exception):
+    pass
+
+
+class TradingAPIFailure(Exception):
+    pass
+
+
+class TradingAPIInvalidResponse(Exception):
+    pass
+
+
 class TradingAPI(object):
     _last_response = None
 
@@ -68,13 +80,24 @@ class TradingAPI(object):
             self,
             call,
             kw_dict,
-            include_requester_credentials=True):
+            include_requester_credentials=True,
+            raise_on_warning=False,
+            raise_on_failure=True):
         headers = self._get_headers(call)
         data = self._get_xml_request(
             call, kw_dict, include_requester_credentials)
         response = requests.post(self._endpoint, data=data, headers=headers)
         self._last_response = response
-        return self._get_data_from_response(call, data, response)
+        response_data = self._get_data_from_response(call, data, response)
+        if 'Ack' not in response_data:
+            raise TradingAPIInvalidResponse('No Ack field in response')
+        if raise_on_failure and response_data['Ack'].lower() == 'failure':
+            raise TradingAPIFailure('{0}'.format(response_data.get(
+                'Errors', 'No error list found')))
+        if raise_on_warning and response_data['Ack'].lower() == 'warning':
+            raise TradingAPIWarning('{0}'.format(response_data.get(
+                'Errors', 'No error list found')))
+        return response_data
 
     def set_token(self, token):
         self._token = token

@@ -4,7 +4,7 @@ Ebay Accounts Views
 """
 from __future__ import unicode_literals
 
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.urls import reverse_lazy, reverse
 from django.shortcuts import redirect
 from django.views.generic import (
     CreateView,
@@ -17,7 +17,7 @@ from django.views.generic import (
 )
 from django.views.generic.detail import SingleObjectMixin
 
-from braces.views import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from .models import Account, Session
 from .forms import BeginAccountCreationForm
