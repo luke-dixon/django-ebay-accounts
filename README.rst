@@ -51,7 +51,7 @@ Quick start
 
 5. Run `python manage.py migrate` (using south) to create the models.
 
-6. Run your server and visit 'https://www.example.com/ebay_accounts/'
+6. Run your server and visit 'https://www.example.com/ebay_accounts/' (login is required, it navigates '/accounts/login/?next=/ebay_accounts/' for login by default)
 
 .. _`Ebay developer site`: http://developer.ebay.com
 
