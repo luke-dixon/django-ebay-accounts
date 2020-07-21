@@ -173,7 +173,7 @@ class AccountRejectCreateViewTest(LoginTestMixin, TestCase):
             Session.DoesNotExist, Session.objects.get, pk=session.pk)
 
 
-class AccountFinishCreateView(LoginTestMixin, TestCase):
+class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
     """
     Tests for the ``AccountFinishCreateView`` view
     """
@@ -217,5 +217,22 @@ class AccountFinishCreateView(LoginTestMixin, TestCase):
         # Check the expiry date for the token
         self.assertEqual(
             account.expires, datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc))
+
+
+class PrivacyPolicyViewTest(LoginTestMixin, TestCase):
+    """
+    Tests for the ``PrivacyPolicyView`` view
+    """
+    user_permissions = (
+        APP_NAME + '.view_account',
+    )
+
+    def test_get(self):
+        self.login()
+
+        response = self.client.get(reverse(APP_NAME + '_privacy_policy'))
+
+        # Check we get a successful status code from the response
+        self.assertEqual(response.status_code, 200)
 
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8
