@@ -9,7 +9,6 @@ from .views import (
     AccountBeginCreateView,
     AccountRejectCreateView,
     AccountFinishCreateView,
-    AccountCreateView,
     AccountDetailView,
     AccountUpdateView,
     AccountDeleteView,

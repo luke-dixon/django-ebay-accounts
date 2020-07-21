@@ -80,15 +80,6 @@ class AccountFinishCreateView(
         return redirect(account.get_absolute_url())
 
 
-class AccountCreateView(
-        LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    """
-    View for creating ``Account`` objects
-    """
-    model = Account
-    permission_required = APP_NAME + '.add_account'
-
-
 class AccountDetailView(
         LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     """
