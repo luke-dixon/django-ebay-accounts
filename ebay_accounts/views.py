@@ -95,6 +95,11 @@ class AccountUpdateView(
     View for updating a ``Account`` object
     """
     model = Account
+
+    # Most of the fields shouldn't be changed, so not a lot here.
+    fields = (
+        'active',
+    )
     permission_required = APP_NAME + '.change_account'
 
 

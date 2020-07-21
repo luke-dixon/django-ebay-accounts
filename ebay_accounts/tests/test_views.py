@@ -219,6 +219,58 @@ class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
             account.expires, datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc))
 
 
+class AccountUpdateViewTest(LoginTestMixin, TestCase):
+    """
+    Tests for the ``AccountUpdateView`` view
+    """
+    user_permissions = (
+        APP_NAME + '.view_account',
+        APP_NAME + '.change_account',
+    )
+
+    def test_get(self):
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.login()
+
+        response = self.client.get(
+            reverse(APP_NAME + '_account_update', kwargs={'pk': account.pk})
+        )
+
+        # Check we get a successful status code from the response
+        self.assertEqual(response.status_code, 200)
+
+    def test_post(self):
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.assertTrue(account.active)
+
+        self.login()
+
+        response = self.client.post(
+            reverse(APP_NAME + '_account_update', kwargs={'pk': account.pk}),
+            data={'status': False},
+            follow=True,
+        )
+
+        # Check we get a successful status code from the response
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the account instance was updated
+        account.refresh_from_db()
+        self.assertFalse(account.active)
+
+
 class PrivacyPolicyViewTest(LoginTestMixin, TestCase):
     """
     Tests for the ``PrivacyPolicyView`` view
