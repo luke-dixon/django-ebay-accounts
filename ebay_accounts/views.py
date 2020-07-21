@@ -31,7 +31,6 @@ class AccountBeginCreateView(
 
     Gets a session_id from Ebay and redirects to the sign-in URL
     """
-    model = Session
     form_class = BeginAccountCreationForm
     permission_required = APP_NAME + '.add_account'
     template_name = APP_NAME + '/account_begin_create_form.html'
