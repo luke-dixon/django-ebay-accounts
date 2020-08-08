@@ -122,11 +122,15 @@ class AccountBeginCreateViewTest(LoginTestMixin, TestCase):
 
             m.post.assert_called_once_with(
                 settings.EBAY_SANDBOX_TRADING_API_ENDPOINT,
-                data=f"""\
+                data="""\
 <?xml version="1.0" encoding="utf-8"?>
-<GetSessionIDRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RuName>{settings.EBAY_SANDBOX_RU_NAME}</RuName></GetSessionIDRequest>""",
+<GetSessionIDRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RuName>{ru_name}</RuName></GetSessionIDRequest>""".format(
+                    ru_name=settings.EBAY_SANDBOX_RU_NAME,
+                ),
                 headers={
-                    'X-EBAY-API-COMPATIBILITY-LEVEL': f'{settings.EBAY_TRADING_API_VERSION}',
+                    'X-EBAY-API-COMPATIBILITY-LEVEL': '{0}'.format(
+                        settings.EBAY_TRADING_API_VERSION
+                    ),
                     'X-EBAY-API-DEV-NAME': settings.EBAY_SANDBOX_DEVID,
                     'X-EBAY-API-APP-NAME': settings.EBAY_SANDBOX_APPID,
                     'X-EBAY-API-CERT-NAME': settings.EBAY_SANDBOX_CERTID,
@@ -237,8 +241,6 @@ class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
 
         self.assertFalse(account.production)
         self.assertTrue(account.active)
-
-
 
 
 class AccountUpdateViewTest(LoginTestMixin, TestCase):
