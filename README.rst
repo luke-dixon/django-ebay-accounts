@@ -49,7 +49,7 @@ Quick start
 
   - again, set this to an empty string if you don't have these yet
 
-5. Run `python manage.py migrate` (using south) to create the models.
+5. Run `python manage.py migrate` to create the models.
 
 6. Run your server and visit 'https://www.example.com/ebay_accounts/' (login is required, it navigates '/accounts/login/?next=/ebay_accounts/' for login by default)
 
