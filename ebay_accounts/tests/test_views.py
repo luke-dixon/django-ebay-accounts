@@ -120,6 +120,21 @@ class AccountBeginCreateViewTest(LoginTestMixin, TestCase):
             response = self.client.post(
                 reverse(APP_NAME + '_account_begin_create'), kw)
 
+            m.post.assert_called_once_with(
+                settings.EBAY_SANDBOX_TRADING_API_ENDPOINT,
+                data=f"""\
+<?xml version="1.0" encoding="utf-8"?>
+<GetSessionIDRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RuName>{settings.EBAY_SANDBOX_RU_NAME}</RuName></GetSessionIDRequest>""",
+                headers={
+                    'X-EBAY-API-COMPATIBILITY-LEVEL': f'{settings.EBAY_TRADING_API_VERSION}',
+                    'X-EBAY-API-DEV-NAME': settings.EBAY_SANDBOX_DEVID,
+                    'X-EBAY-API-APP-NAME': settings.EBAY_SANDBOX_APPID,
+                    'X-EBAY-API-CERT-NAME': settings.EBAY_SANDBOX_CERTID,
+                    'X-EBAY-API-SITEID': '0',
+                    'X-EBAY-API-CALL-NAME': 'GetSessionID',
+                }
+            )
+
         # Get the created session
         session = Session.objects.all()[0]
 
