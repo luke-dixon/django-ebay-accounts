@@ -271,6 +271,57 @@ class AccountUpdateViewTest(LoginTestMixin, TestCase):
         self.assertFalse(account.active)
 
 
+class AccountDeleteViewTest(LoginTestMixin, TestCase):
+    """
+    Tests for the ``AccountDeleteView`` view
+    """
+    user_permissions = (
+        APP_NAME + '.view_account',
+        APP_NAME + '.delete_account',
+    )
+
+    def test_get(self):
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.login()
+
+        response = self.client.get(
+            reverse(APP_NAME + '_account_delete', kwargs={'pk': account.pk})
+        )
+
+        # Check we get a successful status code from the response
+        self.assertEqual(response.status_code, 200)
+
+    def test_post(self):
+        account = Account.objects.create(
+            user_id='test_user',
+            expires=now(),
+            token='12345',
+            site_id=0,
+        )
+
+        self.assertTrue(account.active)
+
+        self.login()
+
+        response = self.client.post(
+            reverse(APP_NAME + '_account_delete', kwargs={'pk': account.pk}),
+            follow=True,
+        )
+
+        # Check we get a successful status code from the response
+        self.assertEqual(response.status_code, 200)
+
+        # Check that the account instance was
+        with self.assertRaises(Account.DoesNotExist):
+            account.refresh_from_db()
+
+
 class PrivacyPolicyViewTest(LoginTestMixin, TestCase):
     """
     Tests for the ``PrivacyPolicyView`` view

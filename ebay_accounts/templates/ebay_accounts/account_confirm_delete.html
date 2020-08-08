@@ -1,0 +1,10 @@
+{% extends 'ebay_accounts/base.html' %}
+{% load i18n %}
+
+{% block body %}
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+
+    <input id="id_submit" type="submit" value="{% trans "Delete account" %}"/>
+</form>
+{% endblock body %}
