@@ -231,7 +231,14 @@ class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
 
         # Check the expiry date for the token
         self.assertEqual(
-            account.expires, datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc))
+            account.expires,
+            datetime(2014, 7, 12, 21, 21, 36, tzinfo=utc)
+        )
+
+        self.assertFalse(account.production)
+        self.assertTrue(account.active)
+
+
 
 
 class AccountUpdateViewTest(LoginTestMixin, TestCase):
