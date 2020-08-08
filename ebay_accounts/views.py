@@ -106,7 +106,7 @@ class AccountUpdateView(
 class AccountDeleteView(
         LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     """
-    View for deleting a ``Account`` object
+    View for deleting an ``Account`` object
     """
     model = Account
     permission_required = APP_NAME + '.delete_account'

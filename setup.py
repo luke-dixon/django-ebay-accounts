@@ -25,9 +25,6 @@ setup(
         'xmltodict',
         'requests',
     ],
-    tests_require=[
-        'django-discover-runner',
-    ],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
