@@ -3,12 +3,12 @@
 Ebay Accounts Models
 """
 from uuid import uuid4
-from datetime import datetime
 from urllib.parse import urlencode
 
 import django
 from django.urls import reverse
 from django.db import models
+from django.utils import timezone
 
 from .trading_api import TradingAPI
 from . import app_settings as settings
@@ -43,7 +43,7 @@ class Account(models.Model):
         return reverse(APP_NAME + '_account_detail', kwargs={'pk': self.pk})
 
     def is_active(self):
-        if datetime.now() >= self.expires:
+        if timezone.now() >= self.expires:
             return False
         if not self.token:
             return False
