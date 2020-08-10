@@ -78,4 +78,7 @@ EBAY_PRODUCTION_APPID = 'TEST_PRODUCTION_APPID'
 EBAY_PRODUCTION_CERTID = 'TEST_PRODUCTION_CERTID'
 EBAY_PRODUCTION_RU_NAME = 'TEST_PRODUCTION_RU_NAME'
 
+TIME_ZONE = 'Europe/London'
+USE_TZ = True
+
 # vim: tabstop=4 expandtab shiftwidth=4 softtabstop=4 fileencoding=utf-8
