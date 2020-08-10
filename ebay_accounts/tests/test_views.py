@@ -3,13 +3,14 @@
 Ebay Accounts Tests Views
 """
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from unittest.mock import patch, Mock
 from urllib.parse import urlparse, parse_qs
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.timezone import now, utc
 from django.test import TestCase
 
@@ -228,7 +229,7 @@ class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
                 data={'UUID': session.uuid},
                 follow=True)
 
-        account = Account.objects.all()[0]
+        account = Account.objects.first()
 
         # Check that we get redirected to newly created account detail view
         self.assertRedirects(response, account.get_absolute_url())
@@ -240,7 +241,19 @@ class AccountFinishCreateViewTest(LoginTestMixin, TestCase):
         )
 
         self.assertFalse(account.production)
-        self.assertTrue(account.active)
+
+        # active will be false as the expires timestamp is in the past
+        self.assertFalse(account.is_active())
+
+        account.expires = timezone.now() + timedelta(days=3)
+        self.assertTrue(account.is_active())
+
+        account.active = False
+        self.assertFalse(account.is_active())
+
+        account.active = True
+        account.token = ''
+        self.assertFalse(account.is_active())
 
 
 class AccountUpdateViewTest(LoginTestMixin, TestCase):
